@@ -1,0 +1,39 @@
+# https://docs.docker.com/compose/compose-file/
+version: "3.3"
+
+services:
+  nextsj_master_t:
+    image: mariadb:10.6.3-focal
+    container_name: nextsj_master_t
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
+    volumes:
+      - ./master/data:/var/lib/mysql
+      - ./master/config/:/etc/mysql/conf.d
+      - ./master/mysql-init-files/:/docker-entrypoint-initdb.d/
+    ports:
+      - "33306:3306"
+    secrets:
+      - mariadb_root_password
+
+  nextsj_slave_t:
+    image: mariadb:10.6.3-focal
+    container_name: nextsj_slave_t
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
+    volumes:
+      - ./slave/data:/var/lib/mysql
+      - ./slave/config/:/etc/mysql/conf.d
+      - ./slave/mysql-init-files/:/docker-entrypoint-initdb.d/
+    ports:
+      - "43306:3306"
+    secrets:
+      - mariadb_root_password
+    depends_on:
+      - nextsj_master_t
+    
+secrets:
+  mariadb_root_password:
+    file: ./mariadb_root_password.txt
