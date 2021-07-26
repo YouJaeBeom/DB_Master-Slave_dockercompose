@@ -1,8 +1,8 @@
-CREATE DATABASE nextsj_fixture;
+CREATE DATABASE dbname;
 
 #create masteruser and grant privileges
-create user nextsj_fixture@'%' identified by 'samjung';
-grant all privileges on nextsj_fixture.* to nextsj_fixture@'%' identified by 'samjung';
+create user dbname@'%' identified by 'password';
+grant all privileges on dbname.* to dbname@'%' identified by 'password';
 
 ## flush
 flush privileges;
