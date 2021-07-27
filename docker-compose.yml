@@ -2,9 +2,9 @@
 version: "3.3"
 
 services:
-  nextsj_master_t:
+  db_master:
     image: mariadb:10.6.3-focal
-    container_name: nextsj_master_t
+    container_name: db_master
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
@@ -17,9 +17,9 @@ services:
     secrets:
       - mariadb_root_password
 
-  nextsj_slave_t:
+  db_slave:
     image: mariadb:10.6.3-focal
-    container_name: nextsj_slave_t
+    container_name: db_slave
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_root_password
@@ -32,7 +32,7 @@ services:
     secrets:
       - mariadb_root_password
     depends_on:
-      - nextsj_master_t
+      - db_master
     
 secrets:
   mariadb_root_password:
