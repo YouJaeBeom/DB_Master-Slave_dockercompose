@@ -148,7 +148,7 @@ server-id=1
 CREATE DATABASE dbname; 
 
 ##create masteruser and grant privileges
-grant all privileges on dbname.* to dbname@'%' identified by 'password';
+grant all privileges on dbname.* to dbname@'%' identified by 'rootpassword';
 
 #replication
 grant replication slave on *.* to 'dbname'@'%';
@@ -190,8 +190,8 @@ log-slave_updates=1
 CREATE DATABASE dbname;
 
 #create masteruser and grant privileges
-create user dbname@'%' identified by 'password';
-grant all privileges on dbname.* to dbname@'%' identified by 'password';
+create user dbname@'%' identified by 'rootpassword';
+grant all privileges on dbname.* to dbname@'%' identified by 'rootpassword';
 
 ## flush
 flush privileges;
@@ -235,9 +235,9 @@ echo ${master_log_pos}
 query="CHANGE MASTER TO MASTER_HOST='db_master', MASTER_USER='dbname', MASTER_PASSWORD='rootpassword', MASTER_LOG_FILE='${master_log_file}', MASTER_LOG_POS=${master_log_pos} ,master_port=33306"
 
 
-mysql -h127.0.0.1 --port 43306 -uroot -psamjung -e "stop slave"
-mysql -h127.0.0.1 --port 43306 -uroot -psamjung -e "${query}"
-mysql -h127.0.0.1 --port 43306 -uroot -psamjung -e "start slave"
+mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "stop slave"
+mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "${query}"
+mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "start slave"
 ```
 
 이제 모든 과정을 실행시키는 파일입니다. 
@@ -277,9 +277,9 @@ echo ${master_log_pos}
 query="CHANGE MASTER TO MASTER_HOST='db_master', MASTER_USER='dbname', MASTER_PASSWORD='rootpassword', MASTER_LOG_FILE='${master_log_file}', MASTER_LOG_POS=${master_log_pos} ,master_port=33306"
 
 
-mysql -h127.0.0.1 --port 43306 -uroot -psamjung -e "stop slave"
-mysql -h127.0.0.1 --port 43306 -uroot -psamjung -e "${query}"
-mysql -h127.0.0.1 --port 43306 -uroot -psamjung -e "start slave"
+mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "stop slave"
+mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "${query}"
+mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "start slave"
 ```
 
 그 다음 slave db container의 db를 master db container 내의 db 에게 slave 구조를 가지도록 합니다.
