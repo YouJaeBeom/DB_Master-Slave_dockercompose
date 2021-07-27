@@ -287,12 +287,58 @@ mysql -h127.0.0.1 --port 43306 -uroot -prootpassword -e "start slave"
 또한 이제 start slave를 통해서 master - slave 구조를 시작합니다.
 
 
-# 🏹 결과 
+# 🏹  마무리 
+ 
 
+실행 명령어는 아래와 같습니다.
+
+ 
 ```
 source run.sh
+ ```
+
+실행 후 이제 결과를 확인해봐야합니다.
+
+ 
+
+Slave DB container에 접속하여 DB에 들어가도록 합니다.
+
+ 
 ```
-위와 같은 명령어를 통해서 이제 container를 생성하고, master-slave 구조를 갖춘 db가 생성됩니다. 
+## option 1
+docker exec -it db_slave /bin/bash
+
+mysql -u root -p
+>> rootpassword
+
+## option 2 
+mysql mysql -h127.0.0.1 --port 43306 -uroot -prootpassword
+```
+
+ 
+
+데이터베이스에 들어온 후 아래와 같은 명령어를 사용합니다.
+
+ 
+```
+show slave status\G
+ ```
+
+사용하게 되면 아래와 같은 화면이 나오게 됩니다. 
+
+ 
+![image](https://user-images.githubusercontent.com/49609287/127104010-85a7928e-5013-42fe-a8d1-8e45602225ef.png)
+
+
+ 
+
+여기서 우리는 Last_Errno 는 0, Last_IO_Errno가 0이면 설정이 완료된것 입니다.
+
+ 
+
+ 
+
+설정을 완료하게 되면 이제 Master container에서 복제설정한 DB에 데이터가 들어가거나 삭제되는경우 Slave DB에도 바로 적용되는 것을 확인 할 수 있습니다.
 
 
 
